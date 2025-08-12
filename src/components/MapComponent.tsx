@@ -1,10 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  GeoJSON,
-  AttributionControl,
-} from "react-leaflet";
+import { MapContainer, GeoJSON, AttributionControl } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import SearchBox from "./SearchBox";
@@ -80,7 +75,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
     if (isSelected) {
       return {
         fillColor: "#e74c3c", // Màu đỏ cho tỉnh được chọn
-        weight: 4,
+        weight: 1,
         opacity: 1,
         color: "#c0392b", // Viền đỏ đậm
         dashArray: "",
@@ -90,10 +85,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
 
     if (isHovered) {
       return {
-        fillColor: "#f39c12", // Màu cam cho hover
-        weight: 3,
+        fillColor: "#22c55e", // Màu xanh lá cây cho hover
+        weight: 1,
         opacity: 1,
-        color: "#e67e22",
+        color: "#16a34a", // Viền xanh lá đậm hơn
         dashArray: "",
         fillOpacity: 0.8,
       };
@@ -101,12 +96,12 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
 
     // Default style
     return {
-      fillColor: "rgb(59, 216, 255)", // Màu xanh mặc định
-      weight: 2,
+      fillColor: "#3bd8ff", // Màu trắng trong suốt
+      weight: 0.5,
       opacity: 1,
-      color: "#34495e",
+      color: "#374151", // Xám đậm - trung tính, chuyên nghiệp// Viền xanh đậm phù hợp với background
       dashArray: "",
-      fillOpacity: 0.6,
+      fillOpacity: 0.8,
     };
   };
 
@@ -140,13 +135,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
         setSelectedProvince(provinceData.prov_code);
         onProvinceSelect(provinceData);
 
-        // Zoom to province bounds
-        const layer = e.target;
-        const map = layer._map;
-        map.fitBounds(layer.getBounds(), {
-          padding: [20, 20],
-          maxZoom: 10,
-        });
+        // No zoom - keep map fixed
       },
     });
 
@@ -169,20 +158,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
     setSelectedProvince(province.prov_code); // Set selected province for highlighting
     onProvinceSelect(province);
 
-    // Find the province in GeoJSON and zoom to it
-    if (geoJsonData && mapRef.current) {
-      const feature = geoJsonData.features.find(
-        (f: any) => f.properties.prov_code === province.prov_code
-      );
-
-      if (feature) {
-        const bounds = L.geoJSON(feature).getBounds();
-        mapRef.current.fitBounds(bounds, {
-          padding: [20, 20],
-          maxZoom: 10,
-        });
-      }
-    }
+    // No zoom - keep map fixed
   };
 
   return (
@@ -197,17 +173,22 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
       <MapContainer
         center={vietnamCenter}
         zoom={6}
+        minZoom={6}
+        maxZoom={6}
         style={{ height: "100%", width: "100%" }}
         className="leaflet-map"
         ref={mapRef}
         zoomControl={false}
         attributionControl={false}
+        scrollWheelZoom={false}
+        doubleClickZoom={false}
+        touchZoom={false}
+        dragging={false}
+        boxZoom={false}
+        keyboard={false}
+        zoomSnap={0}
+        zoomDelta={0}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://ots.vn/">GTEL OTS</a>'
-          url="https://maps.ots.vn/api-web/tiles/v1/basic/{z}/{x}/{y}.png"
-        />
-
         <AttributionControl position="bottomright" prefix="" />
 
         <GeoJSON
@@ -223,9 +204,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
           onClick={() => {
             setSelectedProvince(null); // Reset selected province
             onProvinceSelect(null);
-            if (mapRef.current) {
-              mapRef.current.setView(vietnamCenter, 6);
-            }
+            // No view change - keep map fixed
           }}
         >
           🏠 Về tổng quan

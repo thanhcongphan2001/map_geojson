@@ -25,8 +25,8 @@
 }
 
 .search-input:focus {
-  border-color: rgb(59, 216, 255);
-  box-shadow: 0 0 0 3px rgba(59, 216, 255, 0.1);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .search-input::placeholder {
@@ -110,7 +110,7 @@
 }
 
 .result-code {
-  background: linear-gradient(135deg, rgb(59, 216, 255), rgb(45, 180, 220));
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
   color: white;
   padding: 2px 8px;
   border-radius: 12px;

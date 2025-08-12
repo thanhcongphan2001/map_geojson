@@ -86,11 +86,7 @@
 .instructions {
   text-align: left;
   padding: 24px;
-  background: linear-gradient(
-    135deg,
-    rgb(59, 216, 255) 0%,
-    rgb(45, 180, 220) 100%
-  );
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
   border-radius: 12px;
   color: white;
 }
@@ -121,11 +117,7 @@
 .province-header {
   padding: 24px 24px 16px 24px;
   border-bottom: 1px solid #e9ecef;
-  background: linear-gradient(
-    135deg,
-    rgb(59, 216, 255) 0%,
-    rgb(45, 180, 220) 100%
-  );
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
   color: white;
 }
 
@@ -176,7 +168,7 @@
   padding: 12px 16px;
   background: #f8f9fa;
   border-radius: 8px;
-  border-left: 4px solid rgb(59, 216, 255);
+  border-left: 4px solid #3b82f6;
 }
 
 .detail-item .label {
@@ -262,17 +254,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(
-    135deg,
-    rgb(59, 216, 255) 0%,
-    rgb(45, 180, 220) 100%
-  );
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
   color: white;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 216, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
 }
 
 .btn-secondary {
