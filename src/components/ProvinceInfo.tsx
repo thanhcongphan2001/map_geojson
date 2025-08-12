@@ -41,9 +41,6 @@ const ProvinceInfo: React.FC<ProvinceInfoProps> = ({ province }) => {
               <li>
                 🏠 <strong>Reset</strong> để về tổng quan
               </li>
-              <li>
-                ⚡ <strong>Zoom</strong> tự động khi chọn tỉnh
-              </li>
             </ul>
           </div>
         </div>
