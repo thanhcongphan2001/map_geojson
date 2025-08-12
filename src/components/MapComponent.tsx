@@ -130,7 +130,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
         layer.setStyle(getProvinceStyle(feature));
       },
 
-      click: (e) => {
+      click: () => {
         // Set selected province for highlighting
         setSelectedProvince(provinceData.prov_code);
         onProvinceSelect(provinceData);
