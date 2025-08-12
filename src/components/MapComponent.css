@@ -139,7 +139,7 @@
 }
 
 .reset-view-btn {
-  background: white;
+  background: rgba(30, 58, 138, 0.95);
   border: none;
   padding: 12px 16px;
   border-radius: 8px;
@@ -147,7 +147,7 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  color: #2c3e50;
+  color: white;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;

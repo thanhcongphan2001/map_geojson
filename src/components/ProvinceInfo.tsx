@@ -29,24 +29,6 @@ const ProvinceInfo: React.FC<ProvinceInfoProps> = ({ province }) => {
           <h3>Chọn một tỉnh thành</h3>
           <p>Click vào bản đồ để xem thông tin chi tiết về tỉnh thành</p>
 
-          <div className="quick-stats">
-            <h4>📊 Thống kê tổng quan</h4>
-            <div className="stats-grid">
-              <div className="stat-item">
-                <span className="stat-number">63</span>
-                <span className="stat-label">Tỉnh thành</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">~102M</span>
-                <span className="stat-label">Dân số</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">331K</span>
-                <span className="stat-label">km² diện tích</span>
-              </div>
-            </div>
-          </div>
-
           <div className="instructions">
             <h4>💡 Hướng dẫn sử dụng</h4>
             <ul>
