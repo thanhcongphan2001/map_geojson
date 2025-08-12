@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  AttributionControl,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import SearchBox from "./SearchBox";
@@ -196,11 +201,14 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
         className="leaflet-map"
         ref={mapRef}
         zoomControl={false}
+        attributionControl={false}
       >
         <TileLayer
-          attribution='&copy; <a href="https://ots.vn">OTS Maps</a>'
+          attribution='&copy; <a href="https://ots.vn/">GTEL OTS</a>'
           url="https://maps.ots.vn/api-web/tiles/v1/basic/{z}/{x}/{y}.png"
         />
+
+        <AttributionControl position="bottomright" prefix="" />
 
         <GeoJSON
           data={geoJsonData}
