@@ -23,21 +23,25 @@ function App() {
   const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(
     null
   );
+  const [provinces, setProvinces] = useState<ProvinceData[]>([]);
 
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🗺️ GTel Maps - Bản đồ Việt Nam</h1>
+        <h1>🗺️ GTEL MAPS - Bản đồ Việt Nam</h1>
         <p>Khám phá các tỉnh thành trên bản đồ tương tác</p>
       </header>
 
       <main className="app-main">
         <div className="map-container">
-          <MapComponent onProvinceSelect={setSelectedProvince} />
+          <MapComponent
+            onProvinceSelect={setSelectedProvince}
+            onProvincesLoad={setProvinces}
+          />
         </div>
 
         <div className="info-panel">
-          <ProvinceInfo province={selectedProvince} />
+          <ProvinceInfo province={selectedProvince} provinces={provinces} />
         </div>
       </main>
     </div>

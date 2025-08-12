@@ -34,11 +34,16 @@ interface ProvinceData {
 
 interface MapComponentProps {
   onProvinceSelect: (province: ProvinceData | null) => void;
+  onProvincesLoad?: (provinces: ProvinceData[]) => void;
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
+const MapComponent: React.FC<MapComponentProps> = ({
+  onProvinceSelect,
+  onProvincesLoad,
+}) => {
   const [geoJsonData, setGeoJsonData] = useState<any>(null);
   const [hoveredProvince, setHoveredProvince] = useState<string | null>(null);
+  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [provinces, setProvinces] = useState<ProvinceData[]>([]);
   const mapRef = useRef<L.Map | null>(null);
 
@@ -56,6 +61,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
             (feature: any) => feature.properties
           );
           setProvinces(provincesData);
+          // Send provinces data to parent component
+          if (onProvincesLoad) {
+            onProvincesLoad(provincesData);
+          }
         }
       } catch (error) {
         console.error("Error loading GeoJSON data:", error);
@@ -68,14 +77,39 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
   // Style function for provinces
   const getProvinceStyle = (feature: any) => {
     const isHovered = hoveredProvince === feature.properties.prov_code;
+    const isSelected = selectedProvince === feature.properties.prov_code;
 
+    // Priority: Selected > Hovered > Default
+    if (isSelected) {
+      return {
+        fillColor: "#e74c3c", // Màu đỏ cho tỉnh được chọn
+        weight: 4,
+        opacity: 1,
+        color: "#c0392b", // Viền đỏ đậm
+        dashArray: "",
+        fillOpacity: 0.9,
+      };
+    }
+
+    if (isHovered) {
+      return {
+        fillColor: "#f39c12", // Màu cam cho hover
+        weight: 3,
+        opacity: 1,
+        color: "#e67e22",
+        dashArray: "",
+        fillOpacity: 0.8,
+      };
+    }
+
+    // Default style
     return {
-      fillColor: isHovered ? "#ff6b6b" : "rgb(59, 216, 255)",
-      weight: isHovered ? 3 : 2,
+      fillColor: "rgb(59, 216, 255)", // Màu xanh mặc định
+      weight: 2,
       opacity: 1,
-      color: isHovered ? "#2c3e50" : "#34495e",
+      color: "#34495e",
       dashArray: "",
-      fillOpacity: isHovered ? 0.8 : 0.6,
+      fillOpacity: 0.6,
     };
   };
 
@@ -95,29 +129,18 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
           fillColor: "rgb(255, 107, 107)",
         });
 
-        // Show tooltip
-        L.popup()
-          .setLatLng(e.latlng)
-          .setContent(
-            `
-            <div class="province-tooltip">
-              <h3>${provinceData.prov_name}</h3>
-              <p><strong>Mã tỉnh:</strong> ${provinceData.prov_code}</p>
-              <p><em>Click để xem chi tiết</em></p>
-            </div>
-          `
-          )
-          .openOn(e.target._map);
+        // No popup on hover - we have tooltip instead
       },
 
       mouseout: (e) => {
         setHoveredProvince(null);
         const layer = e.target;
         layer.setStyle(getProvinceStyle(feature));
-        e.target._map.closePopup();
       },
 
       click: (e) => {
+        // Set selected province for highlighting
+        setSelectedProvince(provinceData.prov_code);
         onProvinceSelect(provinceData);
 
         // Zoom to province bounds
@@ -130,12 +153,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
       },
     });
 
-    // Bind permanent tooltip for province name
-    layer.bindTooltip(provinceData.prov_name, {
-      permanent: false,
-      direction: "center",
-      className: "province-label",
-    });
+    // No tooltip - we have info panel instead
   };
 
   // Vietnam center coordinates
@@ -151,6 +169,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
   }
 
   const handleSearchSelect = (province: ProvinceData) => {
+    setSelectedProvince(province.prov_code); // Set selected province for highlighting
     onProvinceSelect(province);
 
     // Find the province in GeoJSON and zoom to it
@@ -187,9 +206,8 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
         zoomControl={false}
       >
         <TileLayer
-          attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-          subdomains="abcd"
+          attribution='&copy; <a href="https://ots.vn">OTS Maps</a>'
+          url="https://maps.ots.vn/api-web/tiles/v1/basic/{z}/{x}/{y}.png"
         />
 
         <GeoJSON
@@ -203,6 +221,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
         <button
           className="reset-view-btn"
           onClick={() => {
+            setSelectedProvince(null); // Reset selected province
             onProvinceSelect(null);
             if (mapRef.current) {
               mapRef.current.setView(vietnamCenter, 6);

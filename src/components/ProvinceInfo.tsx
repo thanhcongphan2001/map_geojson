@@ -1,3 +1,5 @@
+import { useState } from "react";
+import ChartModal from "./ChartModal";
 import "./ProvinceInfo.css";
 
 interface ProvinceData {
@@ -21,7 +23,11 @@ interface ProvinceInfoProps {
   provinces?: ProvinceData[];
 }
 
-const ProvinceInfo: React.FC<ProvinceInfoProps> = ({ province }) => {
+const ProvinceInfo: React.FC<ProvinceInfoProps> = ({
+  province,
+  provinces = [],
+}) => {
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
   if (!province) {
     return (
       <div className="province-info">
@@ -38,7 +44,7 @@ const ProvinceInfo: React.FC<ProvinceInfoProps> = ({ province }) => {
                 <span className="stat-label">Tỉnh thành</span>
               </div>
               <div className="stat-item">
-                <span className="stat-number">~97M</span>
+                <span className="stat-number">~102M</span>
                 <span className="stat-label">Dân số</span>
               </div>
               <div className="stat-item">
@@ -161,8 +167,23 @@ const ProvinceInfo: React.FC<ProvinceInfoProps> = ({ province }) => {
 
         <div className="action-buttons">
           <button className="btn-primary">📖 Xem thêm thông tin</button>
-          <button className="btn-secondary">📊 Xem biểu đồ</button>
+          <button
+            className="btn-secondary"
+            onClick={() => setIsChartModalOpen(true)}
+          >
+            📊 Xem biểu đồ
+          </button>
         </div>
+
+        {/* Chart Modal */}
+        {province && (
+          <ChartModal
+            isOpen={isChartModalOpen}
+            onClose={() => setIsChartModalOpen(false)}
+            province={province}
+            allProvinces={provinces}
+          />
+        )}
       </div>
     </div>
   );
