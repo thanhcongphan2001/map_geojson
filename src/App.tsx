@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import MapComponent from "./components/MapComponent";
+import ProvinceInfo from "./components/ProvinceInfo";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface ProvinceData {
+  id: number;
+  prov_code: string;
+  prov_name: string;
+  prov_fname: string;
+  prov_ne: string;
+  prov_fne: string;
+  level: string;
+  region: string | null;
+  clime: string | null;
+  sort: number;
+  pop: number | null;
+  area: number | null;
+  gdp: number | null;
 }
 
-export default App
+function App() {
+  const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(
+    null
+  );
+
+  return (
+    <div className="app">
+      <header className="app-header">
+        <h1>🗺️ GTel Maps - Bản đồ Việt Nam</h1>
+        <p>Khám phá các tỉnh thành trên bản đồ tương tác</p>
+      </header>
+
+      <main className="app-main">
+        <div className="map-container">
+          <MapComponent onProvinceSelect={setSelectedProvince} />
+        </div>
+
+        <div className="info-panel">
+          <ProvinceInfo province={selectedProvince} />
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default App;
