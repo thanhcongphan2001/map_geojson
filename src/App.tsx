@@ -23,7 +23,6 @@ function App() {
   const [selectedProvince, setSelectedProvince] = useState<ProvinceData | null>(
     null
   );
-  const [provinces, setProvinces] = useState<ProvinceData[]>([]);
 
   return (
     <div className="app">
@@ -34,14 +33,11 @@ function App() {
 
       <main className="app-main">
         <div className="map-container">
-          <MapComponent
-            onProvinceSelect={setSelectedProvince}
-            onProvincesLoad={setProvinces}
-          />
+          <MapComponent onProvinceSelect={setSelectedProvince} />
         </div>
 
         <div className="info-panel">
-          <ProvinceInfo province={selectedProvince} provinces={provinces} />
+          <ProvinceInfo province={selectedProvince} />
         </div>
       </main>
     </div>

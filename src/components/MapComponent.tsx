@@ -34,13 +34,9 @@ interface ProvinceData {
 
 interface MapComponentProps {
   onProvinceSelect: (province: ProvinceData | null) => void;
-  onProvincesLoad?: (provinces: ProvinceData[]) => void;
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({
-  onProvinceSelect,
-  onProvincesLoad,
-}) => {
+const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
   const [geoJsonData, setGeoJsonData] = useState<any>(null);
   const [hoveredProvince, setHoveredProvince] = useState<string | null>(null);
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
@@ -61,10 +57,6 @@ const MapComponent: React.FC<MapComponentProps> = ({
             (feature: any) => feature.properties
           );
           setProvinces(provincesData);
-          // Send provinces data to parent component
-          if (onProvincesLoad) {
-            onProvincesLoad(provincesData);
-          }
         }
       } catch (error) {
         console.error("Error loading GeoJSON data:", error);
