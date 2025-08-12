@@ -74,34 +74,34 @@ const MapComponent: React.FC<MapComponentProps> = ({ onProvinceSelect }) => {
     // Priority: Selected > Hovered > Default
     if (isSelected) {
       return {
-        fillColor: "#e74c3c", // Màu đỏ cho tỉnh được chọn
+        fillColor: "#e74c3c",
         weight: 1,
-        opacity: 1,
-        color: "#c0392b", // Viền đỏ đậm
+
+        color: "#c0392b",
         dashArray: "",
-        fillOpacity: 0.9,
+        fillOpacity: 1,
       };
     }
 
     if (isHovered) {
       return {
-        fillColor: "#22c55e", // Màu xanh lá cây cho hover
+        fillColor: "#d2e006ff",
         weight: 1,
-        opacity: 1,
-        color: "#16a34a", // Viền xanh lá đậm hơn
+
+        color: "#afc746ff",
         dashArray: "",
-        fillOpacity: 0.8,
+        fillOpacity: 1,
       };
     }
 
     // Default style
     return {
-      fillColor: "#3bd8ff", // Màu trắng trong suốt
+      fillColor: "#3bd8ff",
       weight: 0.5,
-      opacity: 1,
-      color: "#374151", // Xám đậm - trung tính, chuyên nghiệp// Viền xanh đậm phù hợp với background
+
+      color: "#374151",
       dashArray: "",
-      fillOpacity: 0.8,
+      fillOpacity: 1,
     };
   };
 
